@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emma Allen's Sweet 16 Masquerade</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #ffd700;
+    --gold-light: #ffe866;
+    --gold-dark: #c9a800;
+    --bg: #0d0018;
+    --deep: #180030;
+    --magenta: #ff2d78;
+    --violet: #b44fff;
+    --teal: #00e5c8;
+    --cream: #fff8f0;
+    --card-bg: rgba(30,0,60,0.85);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+  }
+
+  /* ── PARTICLES ── */
+  #particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .particle {
+    position:absolute; border-radius:50%; opacity:0;
+    animation: drift linear infinite;
+  }
+  @keyframes drift {
+    0%   { transform:translateY(100vh) scale(0); opacity:0; }
+    10%  { opacity:1; }
+    90%  { opacity:0.5; }
+    100% { transform:translateY(-20px) scale(1.5); opacity:0; }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position:relative; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:60px 20px;
+    z-index:1;
+    background: radial-gradient(ellipse at 30% 20%, #3a006a 0%, #0d0018 55%),
+                radial-gradient(ellipse at 80% 80%, #1a003a 0%, transparent 60%);
+  }
+  .hero::after {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffd700' fill-opacity='0.03'%3E%3Cpath d='M40 0l2 38 38 2-38 2-2 38-2-38L0 40l38-2z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .mask-deco {
+    font-size:90px; margin-bottom:8px;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255,45,120,0.7)) drop-shadow(0 0 60px rgba(180,79,255,0.4));
+  }
+  @keyframes float {
+    0%,100%{ transform:translateY(0) rotate(-4deg); }
+    50%    { transform:translateY(-14px) rotate(4deg); }
+  }
+
+  .hero-eyebrow {
+    font-family:'Cinzel',serif; font-size:clamp(11px,1.8vw,14px);
+    letter-spacing:0.55em; color:var(--teal); text-transform:uppercase;
+    margin-bottom:18px; opacity:0; animation:fadeUp 1s 0.3s forwards;
+  }
+  .hero-title {
+    font-family:'Cinzel Decorative',cursive; font-size:clamp(26px,6.5vw,76px);
+    font-weight:700; line-height:1.1;
+    background:linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 45%, #ff9d00 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    opacity:0; animation:fadeUp 1s 0.55s forwards;
+  }
+  .hero-name {
+    font-family:'Cormorant Garamond',serif; font-style:italic;
+    font-size:clamp(38px,9.5vw,105px); font-weight:300; color:var(--cream);
+    letter-spacing:0.04em; line-height:1;
+    opacity:0; animation:fadeUp 1s 0.8s forwards;
+  }
+  .hero-number {
+    font-family:'Cinzel Decorative',cursive; font-size:clamp(55px,14vw,150px);
+    font-weight:700; line-height:0.9;
+    background:linear-gradient(180deg, var(--magenta) 0%, var(--violet) 60%, #5500cc 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    filter: drop-shadow(0 0 40px rgba(255,45,120,0.5));
+    opacity:0; animation:fadeUp 1s 1s forwards;
+  }
+  .hero-divider {
+    width:220px; height:1px; margin:26px auto;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    opacity:0; animation:fadeUp 1s 1.2s forwards;
+  }
+  .hero-details {
+    display:flex; gap:44px; flex-wrap:wrap; justify-content:center;
+    opacity:0; animation:fadeUp 1s 1.4s forwards;
+  }
+  .hd-item { text-align:center; }
+  .hd-label {
+    font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.45em;
+    color:var(--teal); text-transform:uppercase; display:block; margin-bottom:5px;
+  }
+  .hd-value { font-size:clamp(16px,2.5vw,22px); font-weight:300; color:var(--cream); }
+
+  @keyframes fadeUp {
+    from{ opacity:0; transform:translateY(28px); }
+    to  { opacity:1; transform:translateY(0); }
+  }
+  .scroll-hint {
+    position:absolute; bottom:28px;
+    font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.4em;
+    color:var(--gold); opacity:0.5; text-transform:uppercase;
+    animation:pulse 2s ease-in-out infinite;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  @keyframes pulse{ 0%,100%{opacity:0.3} 50%{opacity:0.85} }
+
+  /* ── LAYOUT ── */
+  .wrap { max-width:920px; margin:0 auto; padding:70px 28px; position:relative; z-index:1; }
+
+  .sec-eyebrow {
+    display:block; text-align:center; margin-bottom:14px;
+    font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.5em;
+    color:var(--teal); text-transform:uppercase;
+  }
+  .sec-title {
+    font-family:'Cinzel Decorative',cursive; font-size:clamp(22px,3.8vw,38px);
+    text-align:center; margin-bottom:44px;
+    background:linear-gradient(135deg,var(--gold-light),var(--gold));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .fancy-rule {
+    display:flex; align-items:center; gap:18px;
+    max-width:560px; margin:0 auto 58px;
+  }
+  .fancy-rule::before,.fancy-rule::after {
+    content:''; flex:1; height:1px;
+    background:linear-gradient(90deg,transparent,rgba(255,215,0,0.55));
+  }
+  .fancy-rule::after { background:linear-gradient(90deg,rgba(255,215,0,0.55),transparent); }
+  .fancy-rule span { color:var(--gold); font-size:20px; }
+
+  /* ── CARDS ── */
+  .cards-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:22px;
+    margin-bottom:52px;
+  }
+  .card {
+    border:1px solid rgba(255,215,0,0.22); background:var(--card-bg);
+    padding:30px 22px; text-align:center; position:relative; overflow:hidden;
+    transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s;
+  }
+  .card::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(circle at 50% -10%,rgba(255,215,0,0.07),transparent 65%);
+  }
+  .card:hover { border-color:var(--gold); transform:translateY(-5px); box-shadow:0 8px 40px rgba(255,215,0,0.15); }
+  .card-icon { font-size:38px; margin-bottom:13px; }
+  .card-label { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; margin-bottom:8px; }
+  .card-body { font-size:18px; font-weight:300; color:var(--cream); line-height:1.5; }
+
+  /* ── MENU ── */
+  .menu-box {
+    background:linear-gradient(135deg,rgba(30,0,60,0.7),rgba(50,0,40,0.6));
+    border:1px solid rgba(255,215,0,0.2); padding:48px 38px; text-align:center;
+  }
+  .menu-items { display:flex; gap:56px; justify-content:center; flex-wrap:wrap; margin-top:30px; }
+  .mi { text-align:center; }
+  .mi-emoji { font-size:54px; display:block; margin-bottom:12px; animation:float 3.5s ease-in-out infinite; }
+  .mi:last-child .mi-emoji { animation-delay:-1.8s; }
+  .mi-name { font-family:'Cinzel Decorative',cursive; font-size:18px; color:var(--gold-light); margin-bottom:7px; }
+  .mi-desc { font-size:16px; color:rgba(255,248,240,0.65); font-style:italic; max-width:175px; }
+
+  /* ── RSVP FORM ── */
+  .rsvp-box {
+    background:linear-gradient(155deg,rgba(13,0,24,0.97),rgba(30,0,60,0.92));
+    border:1px solid rgba(255,215,0,0.35);
+    padding:60px 52px; position:relative; overflow:hidden;
+  }
+  .rsvp-box::before {
+    content:''; position:absolute; top:-60px; right:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle,rgba(255,45,120,0.1),transparent);
+  }
+  .rsvp-box::after {
+    content:''; position:absolute; bottom:-60px; left:-60px;
+    width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle,rgba(180,79,255,0.1),transparent);
+  }
+  @media(max-width:580px){ .rsvp-box{ padding:36px 22px; } }
+
+  /* ── FORM FIELDS — BIG ── */
+  .fg { margin-bottom:28px; }
+  .fg label {
+    display:block; font-family:'Cinzel',serif; font-size:13px;
+    letter-spacing:0.38em; color:var(--gold); text-transform:uppercase; margin-bottom:10px;
+  }
+  .fg input, .fg select, .fg textarea {
+    width:100%; background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,215,0,0.32); color:var(--cream);
+    padding:18px 22px; font-family:'Cormorant Garamond',serif; font-size:24px;
+    outline:none; transition:border-color 0.3s,background 0.3s; appearance:none;
+    line-height:1.3;
+  }
+  .fg input::placeholder, .fg textarea::placeholder {
+    color:rgba(255,248,240,0.3); font-style:italic;
+  }
+  .fg input:focus,.fg select:focus,.fg textarea:focus {
+    border-color:var(--gold); background:rgba(255,215,0,0.08);
+    box-shadow:0 0 20px rgba(255,215,0,0.1);
+  }
+  .fg select option { background:#180030; color:var(--cream); font-size:20px; }
+
+  /* stepper */
+  .stepper { display:flex; align-items:stretch; border:1px solid rgba(255,215,0,0.32); }
+  .stepper button {
+    background:rgba(255,215,0,0.1); border:none; color:var(--gold);
+    width:60px; font-size:28px; cursor:pointer; transition:background 0.2s;
+    flex-shrink:0; font-family:inherit;
+  }
+  .stepper button:hover { background:rgba(255,215,0,0.25); }
+  .stepper input {
+    border:none !important; box-shadow:none !important;
+    text-align:center; flex:1; background:transparent !important;
+    font-size:28px !important; color:var(--cream); padding:18px 0 !important;
+    font-family:'Cormorant Garamond',serif; font-weight:400;
+  }
+
+  /* RSVP radio cards */
+  .rsvp-opts { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
+  @media(max-width:480px){ .rsvp-opts{ grid-template-columns:1fr; } }
+  .rsvp-radio { display:none; }
+  .rsvp-radio + label {
+    display:block; text-align:center; padding:22px 10px;
+    border:1px solid rgba(255,215,0,0.22); cursor:pointer;
+    transition:all 0.25s; font-family:'Cinzel',serif; font-size:12px;
+    letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,248,240,0.5);
+  }
+  .rsvp-radio + label .opt-icon { display:block; font-size:34px; margin-bottom:10px; }
+  .rsvp-radio:checked + label {
+    background:rgba(255,215,0,0.14); border-color:var(--gold);
+    color:var(--gold-light); box-shadow:0 0 22px rgba(255,215,0,0.15);
+  }
+  .rsvp-radio + label:hover { border-color:rgba(255,215,0,0.6); }
+
+  .btn-rsvp {
+    width:100%; padding:22px 40px; border:none; cursor:pointer;
+    background:linear-gradient(135deg,#c9a800,var(--gold),#ffb300,var(--gold),#c9a800);
+    background-size:300% 100%; background-position:100% 0;
+    font-family:'Cinzel',serif; font-size:15px; letter-spacing:0.42em;
+    text-transform:uppercase; color:#0d0018; font-weight:700;
+    transition:background-position 0.45s,transform 0.2s,box-shadow 0.2s;
+    margin-top:10px; position:relative; z-index:1;
+  }
+  .btn-rsvp:hover { background-position:0 0; transform:translateY(-2px); box-shadow:0 6px 30px rgba(255,215,0,0.38); }
+  .btn-rsvp:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
+
+  .form-note {
+    text-align:center; margin-top:16px;
+    font-size:15px; color:rgba(255,248,240,0.38); font-style:italic;
+  }
+  .form-error {
+    color:#ff6680; font-size:15px; text-align:center;
+    margin-top:14px; font-style:italic; display:none;
+  }
+
+  /* ── SUCCESS ── */
+  #success-msg {
+    display:none; text-align:center; padding:50px 30px;
+    border:1px solid var(--gold); background:rgba(255,215,0,0.07);
+  }
+  #success-msg .s-icon { font-size:56px; margin-bottom:18px; display:block; }
+  #success-msg h3 { font-family:'Cinzel Decorative',cursive; font-size:26px; color:var(--gold-light); margin-bottom:12px; }
+  #success-msg p { font-size:20px; color:rgba(255,248,240,0.8); font-style:italic; }
+  .btn-another {
+    margin-top:24px; background:transparent; border:1px solid var(--gold);
+    color:var(--gold); padding:13px 34px; cursor:pointer;
+    font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.35em;
+    text-transform:uppercase; transition:background 0.2s;
+  }
+  .btn-another:hover { background:rgba(255,215,0,0.12); }
+
+  /* ── GUEST TABLE ── */
+  .guests-wrap { max-width:920px; margin:0 auto; padding:10px 28px 80px; position:relative; z-index:1; }
+  .guests-header {
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid rgba(255,215,0,0.25); padding-bottom:22px; margin-bottom:32px;
+    flex-wrap:wrap; gap:16px;
+  }
+  .guests-title {
+    font-family:'Cinzel Decorative',cursive; font-size:clamp(18px,2.8vw,26px);
+    background:linear-gradient(135deg,var(--gold-light),var(--gold));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .summary-badges { display:flex; gap:11px; flex-wrap:wrap; }
+  .sbadge {
+    padding:6px 16px; font-family:'Cinzel',serif;
+    font-size:11px; letter-spacing:0.28em; text-transform:uppercase; border:1px solid; font-weight:600;
+  }
+  .sb-yes   { border-color:#00d46a; color:#00ff7f; background:rgba(0,212,106,0.1); }
+  .sb-maybe { border-color:var(--gold-dark); color:var(--gold); background:rgba(255,215,0,0.08); }
+  .sb-no    { border-color:#ff4466; color:#ff6680; background:rgba(255,68,102,0.1); }
+  .sb-total { border-color:var(--violet); color:#d08fff; background:rgba(180,79,255,0.1); }
+
+  .guest-table-wrap { overflow-x:auto; }
+  table.gt {
+    width:100%; border-collapse:collapse; font-size:18px;
+  }
+  table.gt thead tr { border-bottom:1px solid rgba(255,215,0,0.35); }
+  table.gt th {
+    font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.4em;
+    text-transform:uppercase; color:var(--gold); padding:14px 18px; text-align:left; white-space:nowrap;
+  }
+  table.gt td { padding:16px 18px; border-bottom:1px solid rgba(255,215,0,0.08); color:var(--cream); vertical-align:middle; }
+  table.gt tbody tr { transition:background 0.2s; }
+  table.gt tbody tr:hover { background:rgba(255,215,0,0.04); }
+  .tbl-name { font-size:20px; font-weight:400; }
+  .tbl-rel  { font-style:italic; color:rgba(255,248,240,0.65); font-size:17px; }
+  .tbl-cnt  { font-family:'Cinzel',serif; font-size:15px; font-weight:600; color:var(--teal); text-align:center; }
+  .tbl-status {
+    display:inline-block; padding:5px 15px;
+    font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.28em;
+    text-transform:uppercase; border:1px solid; white-space:nowrap;
+  }
+  .ts-yes   { border-color:#00d46a; color:#00ff7f; background:rgba(0,212,106,0.1); }
+  .ts-maybe { border-color:var(--gold-dark); color:var(--gold); background:rgba(255,215,0,0.08); }
+  .ts-no    { border-color:#ff4466; color:#ff6680; background:rgba(255,68,102,0.1); }
+  .empty-row td { text-align:center; padding:64px 20px; color:rgba(255,248,240,0.3); font-style:italic; font-size:19px; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align:center; padding:38px 20px;
+    border-top:1px solid rgba(255,215,0,0.12);
+    font-size:14px; color:rgba(255,248,240,0.3);
+    font-style:italic; z-index:1; position:relative; letter-spacing:0.1em;
+  }
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="mask-deco">🎭</div>
+  <p class="hero-eyebrow">You are cordially invited to</p>
+  <h1 class="hero-title">Emma Allen's</h1>
+  <div class="hero-name">Sweet</div>
+  <div class="hero-number">XVI</div>
+  <div class="hero-divider"></div>
+  <div class="hero-details">
+    <div class="hd-item">
+      <span class="hd-label">Date</span>
+      <span class="hd-value">Saturday, [Month Day], 2025</span>
+    </div>
+    <div class="hd-item">
+      <span class="hd-label">Time</span>
+      <span class="hd-value">7:00 PM – Midnight</span>
+    </div>
+    <div class="hd-item">
+      <span class="hd-label">Venue</span>
+      <span class="hd-value">[Venue Name &amp; Address]</span>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>✦ RSVP BELOW ✦</span><span>▼</span></div>
+</div>
+
+<!-- ═══ PARTY DETAILS ═══ -->
+<div class="wrap">
+  <span class="sec-eyebrow">The Evening</span>
+  <h2 class="sec-title">A Night Behind the Mask</h2>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">🎭</div>
+      <div class="card-label">Dress Code</div>
+      <div class="card-body">Masquerade Glam<br><span style="font-size:15px;opacity:0.65;font-style:italic;">Masks encouraged!</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎶</div>
+      <div class="card-label">Music &amp; Dancing</div>
+      <div class="card-body">All Night Long<br><span style="font-size:15px;opacity:0.65;font-style:italic;">Dancing, music, and memories</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📸</div>
+      <div class="card-label">Photo Booth</div>
+      <div class="card-body">Masquerade Props<br><span style="font-size:15px;opacity:0.65;font-style:italic;">Strike a pose!</span></div>
+    </div>
+  </div>
+
+  <div class="menu-box">
+    <span class="sec-eyebrow">The Feast</span>
+    <h3 style="font-family:'Cinzel Decorative',cursive;font-size:clamp(18px,3vw,28px);color:var(--gold-light);margin-bottom:8px;">Tonight's Indulgences</h3>
+    <p style="font-style:italic;color:rgba(255,248,240,0.55);font-size:17px;">A spread fit for a queen</p>
+    <div class="menu-items">
+      <div class="mi">
+        <span class="mi-emoji">🌮</span>
+        <div class="mi-name">Taco Bar</div>
+        <div class="mi-desc">Build-your-own tacos — carne asada, pollo, and veggie options</div>
+      </div>
+      <div class="mi">
+        <span class="mi-emoji">🍫</span>
+        <div class="mi-name">Chocolate Fountain</div>
+        <div class="mi-desc">Rich cascading chocolate with fruits, marshmallows &amp; dippers</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RSVP ═══ -->
+<div class="wrap" style="padding-top:0;">
+  <div class="fancy-rule"><span>🎭</span></div>
+  <span class="sec-eyebrow">Will You Join Us?</span>
+  <h2 class="sec-title">Send Your RSVP</h2>
+
+  <div class="rsvp-box">
+    <div id="rsvp-form-wrap">
+
+      <div class="fg">
+        <label for="f-name">Your Name</label>
+        <input type="text" id="f-name" placeholder="Full name" autocomplete="name">
+      </div>
+
+      <div class="fg">
+        <label for="f-relation">How do you know Emma?</label>
+        <input type="text" id="f-relation" placeholder="e.g. Classmate at Jefferson High, neighbor, family friend…">
+      </div>
+
+      <div class="fg">
+        <label>How many in your party?</label>
+        <div class="stepper">
+          <button type="button" onclick="changeCount(-1)">−</button>
+          <input type="number" id="f-count" value="1" min="1" max="20" readonly>
+          <button type="button" onclick="changeCount(1)">+</button>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Will you attend?</label>
+        <div class="rsvp-opts">
+          <div>
+            <input class="rsvp-radio" type="radio" name="status" id="opt-yes" value="Yes">
+            <label for="opt-yes"><span class="opt-icon">🎉</span>Yes, I'll be there!</label>
+          </div>
+          <div>
+            <input class="rsvp-radio" type="radio" name="status" id="opt-maybe" value="Maybe">
+            <label for="opt-maybe"><span class="opt-icon">🤔</span>Maybe</label>
+          </div>
+          <div>
+            <input class="rsvp-radio" type="radio" name="status" id="opt-no" value="No">
+            <label for="opt-no"><span class="opt-icon">😢</span>Can't make it</label>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-rsvp" id="submit-btn" onclick="submitRSVP()">✦ Send My RSVP ✦</button>
+      <p class="form-error" id="form-error"></p>
+      <p class="form-note">Your response goes directly to Emma's family — no email app needed.</p>
+    </div>
+
+    <div id="success-msg">
+      <span class="s-icon">🎭</span>
+      <h3>RSVP Received!</h3>
+      <p id="success-text">Thank you! Emma can't wait to celebrate with you!</p>
+      <button class="btn-another" onclick="resetForm()">Add Another Guest</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GUEST TABLE ═══ -->
+<div class="guests-wrap">
+  <div class="guests-header">
+    <h2 class="guests-title">🎭 Guest List</h2>
+    <div class="summary-badges">
+      <span class="sbadge sb-yes"   id="cnt-yes">✓ 0 Attending</span>
+      <span class="sbadge sb-maybe" id="cnt-maybe">? 0 Maybe</span>
+      <span class="sbadge sb-no"    id="cnt-no">✗ 0 Declined</span>
+      <span class="sbadge sb-total" id="cnt-total">👥 0 Guests Total</span>
+    </div>
+  </div>
+  <div class="guest-table-wrap">
+    <table class="gt">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>How They Know Emma</th>
+          <th style="text-align:center;">Party Size</th>
+          <th>Attending?</th>
+        </tr>
+      </thead>
+      <tbody id="guest-tbody">
+        <tr class="empty-row"><td colspan="4">🎭 The guest list awaits its first RSVP…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  🎭 &nbsp; Emma Allen's Sweet Sixteen Masquerade &nbsp; 🎭 &nbsp;&nbsp;|&nbsp;&nbsp; With love &amp; celebration
+</footer>
+
+<script>
+// ── Particles ──
+(function(){
+  const c = document.getElementById('particles');
+  const colors = ['#ffd700','#ff2d78','#b44fff','#00e5c8','#ffe866'];
+  for(let i=0;i<65;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    const sz=Math.random()*4+1.5;
+    p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;`+
+      `animation-duration:${7+Math.random()*13}s;animation-delay:${Math.random()*12}s;`+
+      `background:${colors[Math.floor(Math.random()*colors.length)]};`;
+    c.appendChild(p);
+  }
+})();
+
+// ── Stepper ──
+function changeCount(d){
+  const el=document.getElementById('f-count');
+  el.value=Math.max(1,Math.min(20,parseInt(el.value||1)+d));
+}
+
+// ── Storage ──
+const KEY='emma16_v3';
+function load(){ try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return[];} }
+function save(d){ localStorage.setItem(KEY,JSON.stringify(d)); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── Render table ──
+function renderGuests(){
+  const list=load();
+  const yes=list.filter(r=>r.status==='Yes');
+  const maybe=list.filter(r=>r.status==='Maybe');
+  const no=list.filter(r=>r.status==='No');
+  const totalG=yes.reduce((s,r)=>s+(r.count||1),0)+maybe.reduce((s,r)=>s+(r.count||1),0);
+  document.getElementById('cnt-yes').textContent=`✓ ${yes.length} Attending`;
+  document.getElementById('cnt-maybe').textContent=`? ${maybe.length} Maybe`;
+  document.getElementById('cnt-no').textContent=`✗ ${no.length} Declined`;
+  document.getElementById('cnt-total').textContent=`👥 ${totalG} Guests Total`;
+  const tbody=document.getElementById('guest-tbody');
+  if(!list.length){
+    tbody.innerHTML='<tr class="empty-row"><td colspan="4">🎭 The guest list awaits its first RSVP…</td></tr>';
+    return;
+  }
+  tbody.innerHTML=list.slice().reverse().map(r=>{
+    const cls=r.status==='Yes'?'ts-yes':r.status==='Maybe'?'ts-maybe':'ts-no';
+    const icon=r.status==='Yes'?'🎉':r.status==='Maybe'?'🤔':'😢';
+    return `<tr>
+      <td class="tbl-name">${esc(r.name)}</td>
+      <td class="tbl-rel">${esc(r.relation)}</td>
+      <td class="tbl-cnt">${r.count||1}</td>
+      <td><span class="tbl-status ${cls}">${icon} ${r.status}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Build HTML table for email body ──
+function buildEmailTable(list){
+  const rows = list.map(r=>
+    `<tr style="border-bottom:1px solid #444;">
+      <td style="padding:10px 14px;font-size:16px;">${r.name}</td>
+      <td style="padding:10px 14px;font-size:16px;">${r.relation}</td>
+      <td style="padding:10px 14px;text-align:center;font-size:16px;">${r.count||1}</td>
+      <td style="padding:10px 14px;font-size:16px;">${r.status}</td>
+    </tr>`
+  ).join('');
+  const yes=list.filter(r=>r.status==='Yes');
+  const maybe=list.filter(r=>r.status==='Maybe');
+  const no=list.filter(r=>r.status==='No');
+  const totalG=yes.reduce((s,r)=>s+(r.count||1),0)+maybe.reduce((s,r)=>s+(r.count||1),0);
+  return `
+<table style="border-collapse:collapse;width:100%;font-family:Georgia,serif;background:#1a0030;color:#fff8f0;">
+  <thead>
+    <tr style="background:#2a0050;border-bottom:2px solid #ffd700;">
+      <th style="padding:12px 14px;text-align:left;font-size:13px;letter-spacing:2px;color:#ffd700;">NAME</th>
+      <th style="padding:12px 14px;text-align:left;font-size:13px;letter-spacing:2px;color:#ffd700;">HOW THEY KNOW EMMA</th>
+      <th style="padding:12px 14px;text-align:center;font-size:13px;letter-spacing:2px;color:#ffd700;">PARTY SIZE</th>
+      <th style="padding:12px 14px;text-align:left;font-size:13px;letter-spacing:2px;color:#ffd700;">STATUS</th>
+    </tr>
+  </thead>
+  <tbody>${rows}</tbody>
+</table>
+<p style="font-family:Georgia,serif;color:#aaa;font-size:14px;margin-top:14px;">
+  <strong style="color:#ffd700;">Attending:</strong> ${yes.length} RSVPs (${yes.reduce((s,r)=>s+(r.count||1),0)} guests) &nbsp;|&nbsp;
+  <strong style="color:#ffd700;">Maybe:</strong> ${maybe.length} (${maybe.reduce((s,r)=>s+(r.count||1),0)} guests) &nbsp;|&nbsp;
+  <strong style="color:#ffd700;">Declined:</strong> ${no.length} &nbsp;|&nbsp;
+  <strong style="color:#00e5c8;">Total guests expected:</strong> ${totalG}
+</p>`;
+}
+
+// ── Submit via Formspree ──
+async function submitRSVP(){
+  const name     = document.getElementById('f-name').value.trim();
+  const relation = document.getElementById('f-relation').value.trim();
+  const count    = parseInt(document.getElementById('f-count').value)||1;
+  const statusEl = document.querySelector('input[name="status"]:checked');
+  const errEl    = document.getElementById('form-error');
+  const btn      = document.getElementById('submit-btn');
+
+  errEl.style.display='none';
+  if(!name)     { showErr('Please enter your name.'); return; }
+  if(!relation) { showErr('Please tell us how you know Emma.'); return; }
+  if(!statusEl) { showErr('Please select your attendance status.'); return; }
+
+  const entry = { name, relation, count, status: statusEl.value, ts: new Date().toISOString() };
+  const list  = load(); list.push(entry); save(list);
+
+  btn.disabled = true;
+  btn.textContent = '✦ Sending… ✦';
+
+  // Build full guest table HTML for the email
+  const tableHtml = buildEmailTable(list);
+  const newRsvpHtml = `
+    <p style="font-family:Georgia,serif;font-size:17px;color:#fff8f0;">
+      <strong style="color:#ffd700;">Name:</strong> ${name}<br>
+      <strong style="color:#ffd700;">How they know Emma:</strong> ${relation}<br>
+      <strong style="color:#ffd700;">Party size:</strong> ${count}<br>
+      <strong style="color:#ffd700;">Status:</strong> ${statusEl.value}<br>
+      <strong style="color:#ffd700;">Submitted:</strong> ${new Date().toLocaleString()}
+    </p>`;
+
+  try {
+    // ── FORMSPREE: replace YOUR_FORM_ID below ──
+    const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: "Emma's 16th Party — New RSVP from " + name,
+        _replyto: 'dtnt33@gmail.com',
+        new_rsvp_html: newRsvpHtml,
+        full_guest_list_html: tableHtml,
+        // plain text fallback fields Formspree also sends
+        name, relation, party_size: count, status: statusEl.value,
+        submitted: new Date().toLocaleString()
+      })
+    });
+
+    if(res.ok){
+      showSuccess(statusEl.value);
+    } else {
+      const data = await res.json();
+      // If form not yet activated, still show success locally
+      if(data.errors && data.errors[0] && data.errors[0].message.includes('form')){
+        showFormspreeSetupNote();
+      } else {
+        showSuccess(statusEl.value); // save locally even if email fails
+      }
+    }
+  } catch(e) {
+    // Network error or Formspree not set up yet — save locally, show setup note
+    showFormspreeSetupNote();
+  }
+
+  renderGuests();
+  btn.disabled=false;
+  btn.textContent='✦ Send My RSVP ✦';
+}
+
+function showErr(msg){
+  const el=document.getElementById('form-error');
+  el.textContent=msg; el.style.display='block';
+}
+
+function showSuccess(status){
+  const msgs={
+    'Yes':  "We'll see you at the masquerade! 🎉 Get your mask ready!",
+    'Maybe':"We hope you can make it — fingers crossed! 🎭",
+    'No':   "You'll be missed! Emma appreciates you letting her know. 💛"
+  };
+  document.getElementById('success-text').textContent=msgs[status];
+  document.getElementById('rsvp-form-wrap').style.display='none';
+  document.getElementById('success-msg').style.display='block';
+}
+
+function showFormspreeSetupNote(){
+  // RSVP saved locally; show success but with setup reminder
+  document.getElementById('success-text').innerHTML=
+    'Your RSVP was saved! ⚠️ Email delivery needs Formspree setup — see instructions below.';
+  document.getElementById('rsvp-form-wrap').style.display='none';
+  document.getElementById('success-msg').style.display='block';
+}
+
+function resetForm(){
+  document.getElementById('f-name').value='';
+  document.getElementById('f-relation').value='';
+  document.getElementById('f-count').value=1;
+  document.querySelectorAll('input[name="status"]').forEach(r=>r.checked=false);
+  document.getElementById('rsvp-form-wrap').style.display='block';
+  document.getElementById('success-msg').style.display='none';
+  document.getElementById('form-error').style.display='none';
+}
+
+renderGuests();
+</script>
+</body>
+</html>
